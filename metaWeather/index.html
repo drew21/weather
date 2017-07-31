@@ -1,0 +1,91 @@
+<!doctype html>
+<html ng-app="mtw">
+	<head>
+    	<script src="js/angular.js"></script>
+    	<script type="text/javascript" src="js/jquery.js"></script>
+    	<script type="text/javascript" src="js/bootstrap.js"></script>
+    	<script type="text/javascript" src="js/mobile-detect.min.js"></script>
+    	<script type="text/javascript" src="js/metaWeatherApp.js"></script>
+    	<link rel="stylesheet" href="css/bootstrap.css">
+    	<link rel="stylesheet" href="css/metaw.css">
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+    	<title>MetaWeather</title>
+    	<link rel="icon" type="image/png" href="media/icon.png" />
+	</head>
+	<body>
+
+		<div class="container-fluid page">
+<!--                                    BANNER                                                                                   -->
+			<div class="row col-md-12 page-header box-shadow--8dp well well-lg">
+				<h1>MetaWeather <small></br>the weather you need</small></h1>
+			</div>
+<!--                                    BODY                                                                                     -->
+			<div class="row">	
+				<div ng-controller="DataController">
+					<div class="col-md-2 well well-lg  box-shadow--8dp">
+						<div class="row">
+							<h3><small>Search options</small></h3>
+							<!--                          SEARCH OPTIONS ZONE                                        -->
+								<ul class="nav nav-pills nav-stacked">
+									<li role="presentation" >
+										Location mode:
+										<select class="form-control" ng-model="locateType" ng-change="setSearchField()">
+										<option ng-repeat ="n in listLocateType" value="{{n}}">{{n}}</option>
+										</select>
+									</li>
+									
+									<li role="presentation" >
+										Forecast mode:
+										<select class="form-control" ng-model="forecastType" ng-change="actualizeSearch()">
+										<option ng-repeat ="n in listForecastType" value="{{n}}">{{n}}</option>
+										</select>
+									</li>
+									<li role="presentation" >
+										Up to (days):
+										<select class="form-control" ng-model="days" ng-options="n for n in listDays" ng-change="actualizeSearch()">
+										</select>
+									</li>
+									<li role="presentation" >
+										Language:
+										<select class="form-control" ng-model="lang" ng-options="n for n in listLang" ng-change="actualizeSearch()">
+										</select>
+									</li>
+									<li role="presentation" >
+										System:
+										<select class="form-control" ng-model="metric" ng-change="actualizeSearch()">
+										<option ng-repeat ="n in listMetric" value="{{n}}">{{n}}</option>
+										</select>
+									</li>
+								</ul>
+							
+						</div>
+						<div class="row">
+							<h3><small>Search</small></h3>
+							<!--                                             SEARCH INPUT (hiding/showing the GPS data)                               -->
+								<form style="witdh:100%;">
+									<input  ng-show="!GPS"class="form-control"  type="text" ng-model="req"/>
+									<table ng-show="GPS">
+										<tr><td style="padding:3px;">lattitude </td><td><input class="form-control"   type="text" ng-model="lat"/></td></tr>
+										<tr><td style="padding:3px;">longitude </td><td><input class="form-control"   type="text" ng-model="lon"/></td></tr>
+									</table>
+									<input style="margin:10px;" ng-click="sendReq()" type="submit" href="#" value="Forecast !"/>
+								</form>
+						</div>
+					</div>
+					<div class="col-md-9 box-shadow--8dp well well-lg" >
+						<!--                                 DISPLAY SEARCH INFO (Binded to search parameters )        -->
+						<h3><small><input ng-click="sendReq()" type="submit" href="#" value="Search"/> for <strong ng-show="!GPS">{{req}}</strong> <strong ng-show="GPS">{{lat}},{{lon}}</strong>
+							(<strong>{{locateType}}</strong>) 
+							for <strong>{{days}}</strong> days 
+							 with <strong>{{metric}}</strong> system. 
+							(Language setting : <strong>{{lang}}</strong> )</small></h3>
+							<div class="col-md-12 table-responsive" ng-bind-html="contentResponse"></div>
+																		<!-- DISPLAY ZONE FOR CONTENT -->
+																		<!--                          -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
